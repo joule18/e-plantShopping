@@ -2,13 +2,21 @@ import React, { useState, useEffect } from "react";
 import "./ProductList.css";
 import CartItem from "./CartItem";
 import SingleProduct from "./SingleProduct";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addItem } from "./CartSlice";
 
 function ProductList({ onHomeClick }) {
   const [showCart, setShowCart] = useState(false);
   const [showPlants, setShowPlants] = useState(false); // State to control the visibility of the About Us page
   const [addedToCart, setAddedToCart] = useState({});
+
+  const items = useSelector((state) => state.cart.items);
+
+  let totalQuantity = 0;
+
+  items.forEach(({ quantity }) => {
+    totalQuantity += quantity;
+  });
 
   const dispatch = useDispatch();
 
@@ -326,8 +334,13 @@ function ProductList({ onHomeClick }) {
         <div style={styleObjUl}>
           <div>
             {" "}
-            <a href="#" onClick={(e) => handlePlantsClick(e)} style={styleA}>
-              Plants
+            <a
+              href="#"
+              onClick={(e) => handlePlantsClick(e)}
+              className="plants-link"
+              style={styleA}
+            >
+              {">>"} Plants
             </a>
           </div>
           <div>
@@ -354,6 +367,11 @@ function ProductList({ onHomeClick }) {
                     id="mainIconPathAttribute"
                   ></path>
                 </svg>
+                {items.length > 0 ? (
+                  <p className="cart-num">[{totalQuantity}]</p>
+                ) : (
+                  ""
+                )}
               </h1>
             </a>
           </div>
@@ -381,6 +399,7 @@ function ProductList({ onHomeClick }) {
                     description={description}
                     cost={cost}
                     handleAddToCart={handleAddToCart}
+                    items={items}
                   />
                 ))}
               </div>

@@ -1,6 +1,14 @@
 import "./SingleProduct.css";
 
-const SingleProduct = ({ name, image, description, cost, handleAddToCart }) => {
+const SingleProduct = ({
+  name,
+  image,
+  description,
+  cost,
+  handleAddToCart,
+  items,
+}) => {
+  const existingItem = items.find((item) => item.name === name);
   return (
     <div className="single-product-container">
       <p className="product-name">{name}</p>
@@ -16,6 +24,7 @@ const SingleProduct = ({ name, image, description, cost, handleAddToCart }) => {
       <button
         className="product-btn"
         onClick={() => handleAddToCart({ name, image, description, cost })}
+        disabled={existingItem}
       >
         Add to Cart
       </button>
